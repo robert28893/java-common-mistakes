@@ -1,8 +1,10 @@
 package vn.unigap.java;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.StopWatch;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -13,6 +15,10 @@ import java.util.Set;
 
 @SpringBootTest
 public class CommonMistakesTests {
+
+    @Autowired
+    private RestTemplate restTemplate;
+
     @Test
     void redundantObjectCreation() {
         StopWatch sw = new StopWatch();
@@ -90,6 +96,11 @@ public class CommonMistakesTests {
 
     @Test
     void hashCodeFunction() {
+        List<Car> carList = new ArrayList<>();
+        carList.add(new Car("x"));
+
+        System.out.println("Contains: " + carList.contains(new Car("x")));
+
         Set<Car> carSet = new HashSet<>();
         carSet.add(new Car("x"));
 
@@ -97,10 +108,8 @@ public class CommonMistakesTests {
     }
 
     @Test
-    void hashCodeFunction1() {
-        List<Car> carSet = new ArrayList<>();
-        carSet.add(new Car("x"));
-
-        System.out.println("Contains: " + carSet.contains(new Car("x")));
+    void noConfig() {
+        String s = restTemplate.getForObject("https://reqres.in/api/users?page=2", String.class);
+        System.out.println(s);
     }
 }

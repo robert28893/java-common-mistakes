@@ -1,1 +1,2 @@
-
+reqres:
+  url: ${REQURES_URL:https://reqres.in}

@@ -1,14 +1,23 @@
 package vn.unigap.java;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.StopWatch;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 
 @SpringBootTest
 public class SolutionTests {
+
+    @Value("${reqres.url}")
+    private String reqresUrl;
+    @Autowired
+    private RestTemplate restTemplate;
 
     @Test
     void redundantObjectCreation() {
@@ -66,5 +75,15 @@ public class SolutionTests {
             default:
                 System.out.println("Default");
         }
+    }
+
+    @Test
+    void noConfig() {
+        String uri = UriComponentsBuilder.fromUriString(reqresUrl)
+                .path("/api/users")
+                .queryParam("page", 2)
+                .toUriString();
+        String s = restTemplate.getForObject(uri, String.class);
+        System.out.println(s);
     }
 }
