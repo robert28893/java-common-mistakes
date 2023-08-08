@@ -1,2 +1,11 @@
+server:
+  port: 8080
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+        enabled: '*'
 reqres:
   url: ${REQURES_URL:https://reqres.in}
